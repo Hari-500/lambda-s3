@@ -4,13 +4,13 @@ import urllib.request
 from urllib.parse import urlparse
 
 
-
+BUCKET_NAME= 'lambda-s3-1311'
 sqs = boto3.client("sqs")
 s3 = boto3.client("s3")
 
 # AWS Configuration
 sqs_queue_url='https://ap-south-1.queue.amazonaws.com/941646819596/lambda1311'
-s3_bucket = 'lambda-s3-1311'  # Optional
+#s3_bucket = 'lambda-s3-1311'  # Optional
 download_to_s3 = True
 
 image_url='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1024px-React-icon.svg.png'
@@ -22,7 +22,7 @@ def Lambda_file_upload(event,context):
 
     try:
         parsed_url =  urlparse(im_url)
-        file_name= parsed_url.path.split('/')[-1]
+        filename= parsed_url.path.split('/')[-1]
 
         # Download image from URL
         response = urllib.request.urlopen(im_url)
@@ -30,7 +30,7 @@ def Lambda_file_upload(event,context):
 
 
         # Upload to S3
-        s3.put_object(Bucket=BUCKET_NAME, Key=filename, Body=image_data, ACL='public-read')
+        s3.put_object(Bucket=BUCKET_NAME, Key=filename, Body=image_data)
 
         print(f"Uploaded to s3://{BUCKET_NAME}/{filename}")
     except Exception as e:
