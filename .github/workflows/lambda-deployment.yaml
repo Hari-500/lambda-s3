@@ -19,7 +19,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           pip install -r requirements.txt -t package/
-          cp lambda_function.py package/
+          cp lambda-sqs-s3.py package/
           cd package
           zip -r ../lambda.zip .
 
